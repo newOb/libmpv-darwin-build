@@ -48,6 +48,7 @@ if arch != archs.universal then
     fribidi = callPackage ../mk-pkg-fribidi/default.nix { };
     freetype = callPackage ../mk-pkg-freetype/default.nix { };
     libpng = callPackage ../mk-pkg-libpng/default.nix { };
+    libplacebo = callPackage ../mk-pkg-libplacebo/default.nix { };
     libvpx = callPackage ../mk-pkg-libvpx/default.nix { };
     libx264 = callPackage ../mk-pkg-libx264/default.nix { };
 
@@ -66,6 +67,7 @@ if arch != archs.universal then
         dav1d
         libxml2
         uchardet
+        libplacebo
         libass
         harfbuzz
         fribidi
