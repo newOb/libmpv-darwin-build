@@ -40,7 +40,10 @@ pkgs.stdenvNoCC.mkDerivation {
     ffmpeg
   ];
   configurePhase = ''
-    meson setup build $src \
+    cp -a $src src
+    chmod -R u+w src
+    patch -p1 -d src < ${../../../patches/fftools-ffi-ffmpeg7-end-pts.patch}
+    meson setup build src \
       --native-file ${nativeFile} \
       --cross-file ${crossFile} \
       --prefix=$out
