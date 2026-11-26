@@ -65,6 +65,16 @@ find ${DEPS} -name "*.dylib" -type f | while read DYLIB; do
         tail -n +2 |
         grep "@rpath" |
         while read DEP; do
+            # Xcode 27 records CoreMedia as @rpath/libswiftCoreMedia.dylib.
+            # Turning that into SwiftCoreMedia.framework makes dyld fail on device.
+            if [ "${DEP}" = "@rpath/libswiftCoreMedia.dylib" ]; then
+                install_name_tool \
+                    -change "${DEP}" "/System/Library/Frameworks/CoreMedia.framework/Versions/A/CoreMedia" \
+                    "${DYLIB}" \
+                    2>/dev/null
+                continue
+            fi
+
             DEP_NAME=$(basename $DEP .dylib | sed 's/\.[0-9]*$//' | sed 's/^lib//')
             DEP_NAME="$(tr '[:lower:]' '[:upper:]' <<<${DEP_NAME:0:1})${DEP_NAME:1}"
 
