@@ -39,6 +39,11 @@ let
         unzip ${libpngPatch} -d libpng-patch
         rsync -a libpng-patch/libpng-*/ $src/
 
+        # libpng 1.6 includes the old Metrowerks <fp.h> whenever TARGET_OS_MAC
+        # is set. Current iOS SDKs do not ship that header.
+        sed -i.bak 's|#      include <fp.h>|#      include <math.h>|' $src/pngpriv.h
+        rm -f $src/pngpriv.h.bak
+
         cp -r $src $out
       '';
 in

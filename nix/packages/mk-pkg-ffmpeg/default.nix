@@ -42,8 +42,8 @@ let
     chmod -R 777 $src
 
     cd $src
-    patch -p1 <${../../../patches/ffmpeg-fix-vp9-hwaccel.patch}
-    patch -p1 <${../../../patches/ffmpeg-fix-hls-mp4-seek.patch}
+    # FFmpeg 7.1 already resets the HLS init section on seek, and the VP9
+    # decoder already lists the VideoToolbox hwaccel. Those 6.0 patches are not applied.
     patch -p1 <${../../../patches/ffmpeg-fix-ios-hdr-texture.patch}
     patch -p1 <${../../../patches/ffmpeg-fix-dash-base-url-escape.patch}
     cd -

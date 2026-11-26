@@ -30,13 +30,21 @@ let
     inherit src;
     inherit nativeBuildInputs;
   };
+  # Apple clang 21 declares __sincosf, not sincosf. HarfBuzz 8.1.1 still calls
+  # sincosf when its configure check sets HAVE_SINCOSF.
+  srcNoSincos = pkgs.runCommand "${pname}-no-sincos-${version}" { } ''
+    cp -r ${patchedSource} $out
+    chmod -R u+w $out
+    sed -i.bak 's/#ifdef HAVE_SINCOSF/#if 0/' $out/src/OT/glyf/VarCompositeGlyph.hh
+    rm -f $out/src/OT/glyf/VarCompositeGlyph.hh.bak
+  '';
 in
 
 pkgs.stdenvNoCC.mkDerivation {
   name = "${pname}-${os}-${arch}-${version}";
   pname = pname;
   inherit version;
-  src = patchedSource;
+  src = srcNoSincos;
   dontUnpack = true;
   enableParallelBuilding = true;
   inherit nativeBuildInputs;

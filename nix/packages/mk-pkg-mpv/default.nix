@@ -24,6 +24,7 @@ let
   crossFile = callPackage ../../utils/cross-file/default.nix { };
   xctoolchainLipo = callPackage ../../utils/xctoolchain/lipo.nix { };
   ffmpeg = callPackage ../mk-pkg-ffmpeg/default.nix { };
+  libplacebo = callPackage ../mk-pkg-libplacebo/default.nix { };
   uchardet = callPackage ../mk-pkg-uchardet/default.nix { };
   libass = callPackage ../mk-pkg-libass/default.nix { };
 
@@ -48,6 +49,7 @@ let
     cd $src
     patch -p1 <${../../../patches/mpv-fix-missing-objc.patch}
     patch -p1 <${../../../patches/mpv-audiounit-shared-session.patch}
+    patch -p1 <${../../../patches/mpv-0.40-libmpv-without-swift.patch}
     if [ "${variant}" == "${variants.audio}" ]; then
       patch -p1 <${../../../patches/mpv-remove-libass.patch}
     fi
@@ -71,7 +73,10 @@ pkgs.stdenvNoCC.mkDerivation {
   enableParallelBuilding = true;
   inherit nativeBuildInputs;
   buildInputs =
-    [ ffmpeg ]
+    [
+      ffmpeg
+      libplacebo
+    ]
     ++ pkgs.lib.optionals (variant == "video") [
       uchardet
       libass
@@ -84,8 +89,6 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dlibmpv=false `# libmpv library`
       -Dbuild-date=false `# whether to include binary compile time`
       -Dtests=false `# unit tests (development only)`
-      -Dta-leak-report=false `# enable ta leak report by default (development only)`
-
       `# misc features`
       -Dcdda=disabled `# cdda support (libcdio)`
       -Dcplugins=disabled `# C plugins`
@@ -102,18 +105,18 @@ pkgs.stdenvNoCC.mkDerivation {
       -Drubberband=disabled `# librubberband support`
       -Dsdl2=disabled `# SDL2`
       -Dsdl2-gamepad=disabled `# SDL2 gamepad input`
-      -Dstdatomic=disabled `# C11 stdatomic.h`
       -Duchardet=disabled `# uchardet support`
       -Duwp=disabled `# Universal Windows Platform`
       -Dvapoursynth=disabled `# VapourSynth filter bridge`
       -Dvector=disabled `# GCC vector instructions`
-      -Dwin32-internal-pthreads=disabled `#internal pthread wrapper for win32 (Vista+)`
+      -Dwin32-threads=disabled `# win32 native threading`
       -Dzimg=disabled `# libzimg support (high quality software scaler)`
       -Dzlib=disabled `# zlib`
 
       `# audio output features`
       -Dalsa=disabled `# ALSA audio output`
       -Daudiounit=disabled `# AudioUnit output for iOS`
+      -Davfoundation=disabled `# AVFoundation pulls macOS-only CoreAudio types`
       -Dcoreaudio=disabled `# CoreAudio audio output`
       -Djack=disabled `# JACK audio output`
       -Dopenal=disabled `# OpenAL audio output`
@@ -146,8 +149,6 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dgl-win32=disabled `# OpenGL Win32 Backend`
       -Dgl-x11=disabled `# OpenGL X11/GLX (deprecated/legacy)`
       -Djpeg=disabled `# JPEG support`
-      -Dlibplacebo=disabled `# libplacebo support`
-      -Drpi=disabled `# Raspberry Pi support`
       -Dsdl2-video=disabled `# SDL2 video output`
       -Dshaderc=disabled `# libshaderc SPIR-V compiler`
       -Dsixel=disabled `# Sixel`
@@ -159,7 +160,6 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dvaapi-drm=disabled `# VAAPI (DRM/EGL support)`
       -Dvaapi-wayland=disabled `# VAAPI (Wayland support)`
       -Dvaapi-x11=disabled `# VAAPI (X11 support)`
-      -Dvaapi-x-egl=disabled `# VAAPI EGL on X11`
       -Dvulkan=disabled `# Vulkan context support`
       -Dwayland=disabled `# Wayland`
       -Dx11=disabled `# X11`
@@ -173,13 +173,14 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dd3d9-hwaccel=disabled `# DXVA2 hwaccel`
       -Dgl-dxinterop-d3d9=disabled `# OpenGL/DirectX Interop Backend DXVA2 interop`
       -Dios-gl=disabled `# iOS OpenGL ES hardware decoding interop support`
-      -Drpi-mmal=disabled `# Raspberry Pi MMAL hwaccel`
       -Dvideotoolbox-gl=disabled `# Videotoolbox with OpenGL`
+      -Dvideotoolbox-pl=disabled `# Videotoolbox with libplacebo`
 
       `# macOS features`
-      -Dmacos-10-11-features=disabled `# macOS 10.11 SDK Features`
-      -Dmacos-10-12-2-features=disabled `# macOS 10.12.2 SDK Features`
-      -Dmacos-10-14-features=disabled `# macOS 10.14 SDK Features`
+      -Dmacos-10-15-4-features=disabled `# macOS 10.15.4 SDK Features`
+      -Dmacos-11-features=disabled `# macOS 11 SDK Features`
+      -Dmacos-11-3-features=disabled `# macOS 11.3 SDK Features`
+      -Dmacos-12-features=disabled `# macOS 12 SDK Features`
       -Dmacos-cocoa-cb=disabled `# macOS libmpv backend`
       -Dmacos-media-player=disabled `# macOS Media Player support`
       -Dmacos-touchbar=disabled `# macOS Touch Bar support`

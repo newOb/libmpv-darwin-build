@@ -23,7 +23,7 @@
  static OSStatus au_get_ary(AudioUnit unit, AudioUnitPropertyID inID, AudioUnitScope inScope, AudioUnitElement inElement, void **data, UInt32 *outDataSize)
  {
      OSStatus err;
-@@ -81,8 +88,60 @@
+@@ -81,8 +88,63 @@
      talloc_free(layout);
      return new_layout;
  }
@@ -32,12 +32,15 @@
 +{
 +    struct priv *p = ao->priv;
 +    AVAudioSession *instance = AVAudioSession.sharedInstance;
++    AVAudioSessionCategoryOptions options = 0;
++    if (!(ao->init_flags & AO_INIT_EXCLUSIVE))
++        options |= AVAudioSessionCategoryOptionMixWithOthers;
 +
 +    pthread_mutex_lock(&audiounit_session_lock);
 +
 +    if (audiounit_session_use_count == 0) {
 +        [instance setCategory:AVAudioSessionCategoryPlayback
-+                  withOptions:AVAudioSessionCategoryOptionMixWithOthers
++                  withOptions:options
 +                        error:nil];
 +        [instance setMode:AVAudioSessionModeMoviePlayback error:nil];
 +        [instance setActive:YES error:nil];
@@ -84,11 +87,16 @@
  static OSStatus render_cb_lpcm(void *ctx, AudioUnitRenderActionFlags *aflags,
                                const AudioTimeStamp *ts, UInt32 bus,
                                UInt32 frames, AudioBufferList *buffer_list)
-@@ -115,10 +174,8 @@
+@@ -115,15 +174,8 @@
  
      MP_VERBOSE(ao, "max channels: %ld, requested: %d\n", maxChannels, (int)ao->channels.num);
  
--    [instance setCategory:AVAudioSessionCategoryPlayback error:nil];
+-    AVAudioSessionCategoryOptions options = 0;
+-    if (!(ao->init_flags & AO_INIT_EXCLUSIVE)) {
+-        options |= AVAudioSessionCategoryOptionMixWithOthers;
+-    }
+-
+-    [instance setCategory:AVAudioSessionCategoryPlayback withOptions:options error:nil];
 -    [instance setMode:AVAudioSessionModeMoviePlayback error:nil];
 -    [instance setActive:YES error:nil];
 -    [instance setPreferredOutputNumberOfChannels:prefChannels error:nil];
