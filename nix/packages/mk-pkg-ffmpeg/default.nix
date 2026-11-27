@@ -44,8 +44,8 @@ let
     cd $src
     # FFmpeg 7.1 already resets the HLS init section on seek, and the VP9
     # decoder already lists the VideoToolbox hwaccel. Those 6.0 patches are not applied.
+    # FFmpeg 9.1 already escapes DASH base URLs. The 7.1 dash patch does not apply.
     patch -p1 <${../../../patches/ffmpeg-fix-ios-hdr-texture.patch}
-    patch -p1 <${../../../patches/ffmpeg-fix-dash-base-url-escape.patch}
     cd -
 
     cp ${./meson.build} $src/meson.build

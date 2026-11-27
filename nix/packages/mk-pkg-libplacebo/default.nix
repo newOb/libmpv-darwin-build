@@ -17,9 +17,9 @@ let
   src = pkgs.fetchFromGitHub {
     owner = "haasn";
     repo = "libplacebo";
-    # Annotated tag v7.349.0. fetchgit cannot check the tag name out of a
-    # shallow clone, so pin the peeled commit.
-    rev = "1fd3c7bde7b943fe8985c893310b5269a09b46c5";
+    # Annotated tag v7.387.0. fetchgit cannot check the tag name out of a
+    # shallow clone, so pin the peeled commit. mpv 0.42 requires this release.
+    rev = "275f7dea27924cdd34ab2e6c20e448b6bc4fab65";
     hash = packageLock.hash;
     fetchSubmodules = true;
   };

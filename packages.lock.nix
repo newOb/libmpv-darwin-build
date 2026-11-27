@@ -5,9 +5,9 @@
     sha256 = "a4003623cdc0109dec3aac8435520aa3fb12c4d69454fa227f2658cdb6dab5fa";
   };
   ffmpeg = {
-    version = "7.1.5";
-    url = "https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz";
-    sha256 = "13smbpyfdy9w5clq1l3fv733i5djzm0k8iv2s4y5xqzrr84qarny";
+    version = "9.1";
+    url = "https://ffmpeg.org/releases/ffmpeg-9.1.tar.xz";
+    sha256 = "0cr4vs7hppm786myydyzwb2vamn12m2fnlnhdi90l69xwr53jk8s";
   };
   fftools-ffi = {
     version = "9b0d4da0";
@@ -70,8 +70,8 @@
     sha256 = "3727b078c360ec69fa869de14bd6f75d7ee8d36987b071e6928d4720a28df3a6";
   };
   libplacebo = {
-    version = "7.349.0";
-    hash = "sha256-lkpSyHYRG5uz9A90Yp5FAN1KP6llTfBjopVPZkNAYqs=";
+    version = "7.387.0";
+    hash = "sha256-9CQhW/3CCUnjo0iDleKhcfZlMYVfHijqLE+oND4Wkeg=";
   };
   mbedtls = {
     version = "3.4.1";
@@ -79,9 +79,9 @@
     sha256 = "a420fcf7103e54e775c383e3751729b8fb2dcd087f6165befd13f28315f754f5";
   };
   mpv = {
-    version = "0.40.0";
-    url = "https://github.com/mpv-player/mpv/archive/refs/tags/v0.40.0.tar.gz";
-    sha256 = "18w1y2162acw97f66s2mjzkgdp6vpgqdr06ksinhl5329xjz980h";
+    version = "0.42.0";
+    url = "https://github.com/mpv-player/mpv/archive/refs/tags/v0.42.0.tar.gz";
+    sha256 = "1pbha3gx8kl7zcm5ly5m70z3fwhhhcbq38byr66xi9k55gxbpzmw";
   };
   uchardet = {
     version = "0.0.8";

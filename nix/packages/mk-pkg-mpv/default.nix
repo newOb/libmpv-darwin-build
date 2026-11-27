@@ -103,8 +103,14 @@ pkgs.stdenvNoCC.mkDerivation {
       -Dlua=disabled `# Lua`
       -Dpthread-debug=disabled `# pthread runtime debugging wrappers`
       -Drubberband=disabled `# librubberband support`
-      -Dsdl2=disabled `# SDL2`
       -Dsdl2-gamepad=disabled `# SDL2 gamepad input`
+      -Dsubrandr=disabled `# libsubrandr subtitle renderer`
+      -Dlibcurl=disabled `# libcurl network backend`
+      -Daaudio=disabled `# AAudio output`
+      -Daudiotrack=disabled `# AudioTrack output`
+      -Damf=disabled `# AMF hwaccel`
+      -Ddvda=disabled `# DVD-Audio`
+      -Dx11-clipboard=disabled `# X11 clipboard`
       -Duchardet=disabled `# uchardet support`
       -Duwp=disabled `# Universal Windows Platform`
       -Dvapoursynth=disabled `# VapourSynth filter bridge`
